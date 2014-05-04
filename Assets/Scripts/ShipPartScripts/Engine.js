@@ -1,5 +1,15 @@
 ﻿#pragma strict
+public var engPower : float = 1;
+public var ISP : float = 320;
 var GFX : Transform;
+var engineThrust : float = 0;
+var emit : Transform;
+var emitSmoke : Transform;
+
+var aaudio : AudioSource;
+
+public var flameRate : float = .50;
+public var smokeRate : float = .75;
 public var Toughness : float = 3;
 
 var Debris1 : Transform;
@@ -10,22 +20,54 @@ var Debris5 : Transform;
 
 var deprisSpawn : Transform;
 
-
-function FixedUpdate () {
-if (Launch.launch == 1){
-	rigidbody.isKinematic = false;
-	}
-
-rigidbody.drag = Gravity.aDrag;
+function Start () {
 
 }
 
+function FixedUpdate () {
+
+if (Launch.launch == 1){
+	rigidbody.isKinematic = false;
+	emit.active = true;
+	emitSmoke.active = true;
+	
+
+
+engineThrust = CommandControl.engSetting * engPower;
+
+if (TankControl.fuelAmt < 0){
+	TankControl.fuelAmt = 0;
+	}
+if (TankControl.fuelAmt > 0){
+	Effects ();
+	rigidbody.AddRelativeForce(Vector3.up * engineThrust);
+
+	if (engineThrust > 0){
+		TankControl.fuelAmt = TankControl.fuelAmt - (engineThrust / (5 * ISP));
+		}
+	}
+	else
+		{
+		emit.particleSystem.emissionRate = 0;
+		emitSmoke.particleSystem.emissionRate = 0;
+		aaudio.volume = 0;
+		}
+	}
+	
+}
+
+function Effects () {
+	emit.particleSystem.emissionRate = flameRate * CommandControl.engSetting;
+	emitSmoke.particleSystem.emissionRate = smokeRate * CommandControl.engSetting;
+	aaudio.volume = CommandControl.engSetting;
+}
 function OnMouseEnter () {
+	
 	GFX.GetComponent(SpriteRenderer).color = Color.cyan;
 
 }
-
 function OnMouseExit () {
+	
 	GFX.GetComponent(SpriteRenderer).color = Color.white;
 	
 }
@@ -39,7 +81,6 @@ function OnMouseUp () {
 function Remove () {
 	Destroy (gameObject);
 }
-
 function Kill (){
 	var debrisNum = Random.Range(2, 5);
 

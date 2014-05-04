@@ -1,5 +1,5 @@
 ﻿#pragma strict
-var LookTo : Transform;
+static var LookTo : Transform;
 var LookTo1 : Transform;
 var LookTo2 : Transform;
 var LookTo3 : Transform;

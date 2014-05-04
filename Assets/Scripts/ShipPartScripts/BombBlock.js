@@ -29,7 +29,7 @@ function FixedUpdate () {
 		Instantiate(bomb, transform.position, transform.rotation);	
 		Kill ();	
 	}
-	rigidbody.drag = Gravity.aDrag;
+	
 }
 
 function Kill (){

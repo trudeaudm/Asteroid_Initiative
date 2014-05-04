@@ -1,17 +1,13 @@
 ﻿#pragma strict
-public var engPower : float = 1;
-public var ISP : float = 320;
 var GFX : Transform;
-var engineThrust : float = 0;
-var emit : Transform;
-var emitSmoke : Transform;
+public var emptyMass : float = 10;
+static var fuelAmt : float;
+public var fAmt : float = 157;
+public var dispFuel : float;
+public var Toughness : float = 2.7;
 
-var aaudio : AudioSource;
-
-public var flameRate : float = .50;
-public var smokeRate : float = .75;
-public var Toughness : float = 3;
-
+public var crashBChance = 40;
+var bomb : Transform;
 var Debris1 : Transform;
 var Debris2 : Transform;
 var Debris3 : Transform;
@@ -21,45 +17,19 @@ var Debris5 : Transform;
 var deprisSpawn : Transform;
 
 function Start () {
-
+fuelAmt = fuelAmt + fAmt;
 }
 
 function FixedUpdate () {
-
 if (Launch.launch == 1){
 	rigidbody.isKinematic = false;
-	emit.active = true;
-	emitSmoke.active = true;
-	
-rigidbody.drag = Gravity.aDrag;
-
-engineThrust = BasicControl.engSetting * engPower;
-
-if (TankControl.fuelAmt < 0){
-	TankControl.fuelAmt = 0;
 	}
-if (TankControl.fuelAmt > 0){
-	Effects ();
-	rigidbody.AddRelativeForce(Vector3.up * engineThrust);
 
-	if (engineThrust > 0){
-		TankControl.fuelAmt = TankControl.fuelAmt - (engineThrust / (5 * ISP));
-		}
-	}
-	else
-		{
-		emit.particleSystem.emissionRate = 0;
-		emitSmoke.particleSystem.emissionRate = 0;
-		aaudio.volume = 0;
-		}
-	}
-	
-}
 
-function Effects () {
-	emit.particleSystem.emissionRate = flameRate * BasicControl.engSetting;
-	emitSmoke.particleSystem.emissionRate = smokeRate * BasicControl.engSetting;
-	aaudio.volume = BasicControl.engSetting;
+dispFuel = fuelAmt;
+rigidbody.mass = ((fuelAmt / 10) + emptyMass);
+
+
 }
 function OnMouseEnter () {
 	
@@ -82,7 +52,7 @@ function Remove () {
 	Destroy (gameObject);
 }
 function Kill (){
-	var debrisNum = Random.Range(2, 5);
+	var debrisNum = Random.Range(2, 4);
 
 	for (var i = 0; i < debrisNum; i++){
 		var debrisType = Random.Range(1, 5);
@@ -105,6 +75,10 @@ function Kill (){
         var dbr = Instantiate(deprisSpawn, transform.position, transform.rotation);
         	dbr.rigidbody.velocity = gameObject.rigidbody.velocity;
 		}
+		var chance = Random.Range(1, 100);
+		if (chance < crashBChance){
+			Instantiate(bomb, transform.position, transform.rotation);	
+			}
 		Destroy (gameObject);
 }
 

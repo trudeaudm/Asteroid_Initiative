@@ -33,7 +33,7 @@ if (Launch.launch == 1){
 	
 rigidbody.drag = Gravity.aDrag;
 
-if (BasicControl.engSetting > 0){
+if (CommandControl.engSetting > 0){
 	engIgnite = engIgnite + 1;
 }
 else if (engIgnite > 0){

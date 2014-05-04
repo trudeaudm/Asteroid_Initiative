@@ -1,6 +1,6 @@
 ﻿#pragma strict
 var trash : GameObject[];
-var player : Transform;
+var pCamera : Transform;
 var spawn : Transform;
 var menus : Transform;
 
@@ -29,11 +29,7 @@ BasicControl.throttle = 0;
  
     for(var i = 0 ; i < trash.length ; i ++)
         Destroy(trash[i]);
-	player.active = true;
-	player.position = spawn.position;
-	player.rotation = spawn.rotation;
-
-//Application.LoadLevel(0);	
+	
 
 
 

@@ -27,8 +27,15 @@ function OnMouseExit () {
 
 function OnMouseUp () {
 
+	if (PartButton.controlPartActive == 0){
+		var addedPart = Instantiate(PartButton.placeMe, transform.position, transform.rotation);	
+		addedPart.GetComponent(FixedJoint).connectedBody = partMain.rigidbody;
+		//addedPart.fixedJoint.connectedBody = partMain;
+		}
+	else {
+	}
 
-	var addedPart = Instantiate(PartButton.placeMe, transform.position, transform.rotation);	
-	addedPart.GetComponent(FixedJoint).connectedBody = partMain.rigidbody;
-	//addedPart.fixedJoint.connectedBody = partMain;
 }
+
+
+
